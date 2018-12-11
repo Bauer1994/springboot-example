@@ -6,12 +6,15 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.ywq.common.AuthenticInterceptor;
+import com.ywq.common.PermissionInterceptor;
 
 @Configuration
 public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
 	@Autowired
 	private AuthenticInterceptor authenticInterceptor;
+	@Autowired
+	private PermissionInterceptor permissionInterceptor;
 	
 	@Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -19,7 +22,11 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
         .addPathPatterns("/**")
         .excludePathPatterns("/hello");
        
+        registry.addInterceptor(permissionInterceptor)
+        .addPathPatterns("/**").excludePathPatterns("/hello");
         //注册
         super.addInterceptors(registry);
+       
+
     }
 }

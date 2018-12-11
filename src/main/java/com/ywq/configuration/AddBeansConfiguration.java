@@ -4,10 +4,13 @@ package com.ywq.configuration;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.ui.velocity.VelocityEngineFactoryBean;
+
+import com.ywq.util.BodyReaderFilter;
 
 /**
  * 使用JavaConfig，配置类
@@ -35,6 +38,13 @@ public class AddBeansConfiguration {
     	return velocityEngineFactoryBean;
     }
     
-    
+    @Bean
+    public FilterRegistrationBean Filters() {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        registrationBean.setFilter(new BodyReaderFilter());
+        registrationBean.addUrlPatterns("/*");
+        registrationBean.setName("koalaSignFilter");
+        return registrationBean;
+    }
 
 }

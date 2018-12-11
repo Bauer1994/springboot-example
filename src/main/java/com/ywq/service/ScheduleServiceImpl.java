@@ -15,7 +15,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 	private String scheduleTime;
 	
 	@Override
-	@Scheduled(cron = "0 */1 * * * ?" )
+	@Scheduled(cron = "0 */3 * * * ?" )
 	//@Scheduled(fixedRate = 6000)
 	public void schedule4Print() {
 		System.out.println("通过@value注解获取到的数据： "+scheduleTime);
