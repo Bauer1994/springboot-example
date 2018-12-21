@@ -33,6 +33,7 @@ public class AsyncServiceImpl implements AsynService {
 	}
 
 	@Override
+	@Async
 	public void testException() {
 		//程序产生异常，测试是否会捕捉!
 		Integer.parseInt("abc");

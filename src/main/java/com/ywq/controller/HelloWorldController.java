@@ -2,7 +2,10 @@ package com.ywq.controller;
 
 import java.util.Set;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ywq.entity.Student;
 import com.ywq.pojo.StudentResponse;
 import com.ywq.service.AsynService;
@@ -34,6 +38,16 @@ public class HelloWorldController {
 	
 	@Autowired
 	private LRUService lRUService;
+	
+	@Autowired
+	private Student s1;//必须使用s1,跟@Bean的名称保持一致才知道注入的是哪一个
+	
+	@Autowired
+	@Qualifier("s2")
+	private Student student2;
+	
+	@Resource(name = "s2")
+	private Student student3;        //student2 ==student3   true
 
 	/**
 	 * 拦截器的白名单URL，该请求不会被拦截
@@ -74,19 +88,22 @@ public class HelloWorldController {
            
     }
     
-    @RequestMapping(value = "/global/exception", method = RequestMethod.GET,   produces = MediaType.APPLICATION_JSON_VALUE)
-    public void testGlobalException() {
-          if (true) {
-        	  throw new IllegalArgumentException();
-          }           
-    }
-   
-    
-    
     @RequestMapping(value = "/redis/lru/{key}", method = RequestMethod.GET,   produces = MediaType.APPLICATION_JSON_VALUE)
     public Set<Object> testZset(@PathVariable("key") String key) {
     	lRUService.addData2Cache(key, new Student(1,"ywq", 2 ,3));
         return lRUService.getDataFromCache(key);   
     }
+    
+    
+    //测试 autowired resource 
+    @RequestMapping(value = "/annotation/all", method = RequestMethod.GET,   produces = MediaType.APPLICATION_JSON_VALUE)
+    public JSONObject test4Annotation() {
+    	JSONObject result = new JSONObject();
+    	result.fluentPut("student1", s1).fluentPut("same", s1 == student2).fluentPut("same2", student3 == student2);
+        return result;   
+    }
+    
+    
+    
    
 }
