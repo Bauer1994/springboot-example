@@ -55,7 +55,7 @@ public class HelloWorldController {
 	 */
 	@RequestMapping(value = "/hello", method = RequestMethod.GET)
 	public String index(@RequestParam(value = "param", required = false) String param) {
-		return "Hello World" +  param ;
+		return param!=null ? "Hello World" +  param :"Hello World";
 	}
 
 

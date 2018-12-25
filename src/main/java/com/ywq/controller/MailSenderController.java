@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ywq.service.MailSenderService;
-import com.ywq.service.StudentService;
 
 /**
  * 
