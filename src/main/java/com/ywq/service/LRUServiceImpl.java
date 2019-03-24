@@ -25,5 +25,15 @@ public class LRUServiceImpl implements LRUService {
 		return redisUtil.zSetRange(key, 0, 5);
 	}
 
-	
+	@Override
+	public void test4nonsynchronized() {
+		try {
+			for (int i = 0; i < 10; i++) {
+				System.out.println(Thread.currentThread().getName() + " 运行第 " + i + "次");
+				Thread.sleep(1000);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

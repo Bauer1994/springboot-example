@@ -5,8 +5,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.ywq.service.LRUService;
 
 /**
  * 测试并发请求
@@ -21,10 +24,17 @@ public class ConcurrentController {
 	
 	private ReentrantLock lock = new ReentrantLock();
 	
-	//经测试 两次刷新请求：test4BrowserConcurrency1与test4BrowserConcurrency2结果一致，也就是Controller层已做处理.
+	@Autowired
+	private LRUService lRUService;
+	
+	//上面的测试不准确，原因在于浏览器对请求的处理是单线程的，想要测试该场景需要使用两台机器模拟
 	@RequestMapping("/browser/test1")
 	public String test4BrowserConcurrency1() {
+		System.out.println("start: "+System.currentTimeMillis());
 		test4nonsynchronized();
+		//lRUService.test4nonsynchronized();
+		System.out.println("end: " + System.currentTimeMillis());
+  
 		return "test4BrowserConcurrency";
 	}
 	
